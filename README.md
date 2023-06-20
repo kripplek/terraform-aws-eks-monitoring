@@ -7,30 +7,60 @@ Deploys the "Grafana + Prometheus + Loki" monitoring stack via Helm on AWS EKS.
 
 ## Usage
 
+** Requires a KMS key **
+
+
 Example:
 
 ```hcl
 module "monitoring" {
   source = "github.com/andreswebs/terraform-aws-eks-monitoring"
 
+  ## Make sure this is not an ARN or the roles will be broken.
   cluster_oidc_provider = var.eks_cluster_oidc_provider
 
   loki_iam_role_name           = "loki-${var.eks_cluster_id}"
   loki_compactor_iam_role_name = "loki-compactor-${var.eks_cluster_id}"
-  grafana_iam_role_name        = "grafana-${var.eks_cluster_id}"
 
   loki_storage_s3_bucket_name = var.loki_storage_s3_bucket_name
+  loki_storage_kms_key_arn    = var.loki_kms_key_arn
 
   chart_version_loki_distributed = var.chart_version_loki_distributed
   chart_version_promtail         = var.chart_version_promtail
   chart_version_prometheus       = var.chart_version_prometheus
   chart_version_grafana          = var.chart_version_grafana
 
+
   grafana_enabled = true
+  grafana_iam_role_name        = "grafana-${var.eks_cluster_id}"
 
 }
+
+
 ```
 
+## Custom Config files for apps.
+There are default provided configs however you may need to drastically change individual application configs.
+
+There's a simple pattern:
+((application))_config_overide_value. This will allow you to override the default with a beautiful custom configuration you've created
+Be careful here. you can easily lose yourself.
+
+## Versions:
+There are version match issues. This is the current values the creator is using
+Using different versions has an effect of having different configuration options. Use the config overrides if you run into issues.
+
+ ```
+chart_version_loki_distributed = "0.66.0"
+chart_version_promtail         = "6.10.0"
+chart_version_prometheus       = "22.6.1"
+chart_version_grafana          = "6.56.4"
+ ```
+
+## Loki Issues
+Modern versions of Loki use WAL
+See: https://github.com/grafana/loki/issues/6122
+ There are several version of this issue and other uses where you may need to extend you customizability.
 
 
 ## Inputs

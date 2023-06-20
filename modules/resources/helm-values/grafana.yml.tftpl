@@ -51,18 +51,18 @@ persistence:
   # # existingClaim:
 
 persistence:
-  enabled: false
-  # type: pvc
-  # storageClassName: default
-  # accessModes:
-  #   - ReadWriteOnce
-  # size: 10Gi
-  # annotations: {}
-  # finalizers:
-  #   - kubernetes.io/pvc-protection
-  # # selectorLabels: {}
-  # # subPath: ""
-  # # existingClaim:
+  enabled: ${grafana_persistence_enabled}
+  type: pvc
+  storageClassName: default
+  accessModes:
+    - ReadWriteOnce
+  size: 10Gi
+  annotations: {}
+  finalizers:
+    - kubernetes.io/pvc-protection
+  # selectorLabels: {}
+  # subPath: ""
+  # existingClaim:
   inMemory:
     enabled: true
     sizeLimit: 300Mi
@@ -71,10 +71,10 @@ adminUser: admin
 # adminPassword: strongpassword
 
 # Use an existing secret for the admin user.
-# admin:
-#   existingSecret: ""
-#   userKey: admin-user
-#   passwordKey: admin-password
+admin:
+  existingSecret: "grafana"
+  userKey: admin-user
+  passwordKey: admin-password
 
 plugins:
   - grafana-piechart-panel
@@ -107,4 +107,5 @@ datasources:
         jsonData:
           authType: default
           defaultRegion: ${aws_region}
+      ${grafana_additional_data_sources}
 

@@ -34,6 +34,18 @@ variable "grafana_enabled" {
   default     = true
 }
 
+variable "grafana_persistence_enabled" {
+  type        = bool
+  description = "Enable Grafana persistence?"
+  default     = false
+}
+
+variable "grafana_additional_data_sources" {
+  type        = string
+  description = "Additional data sources to add to grafana"
+  default     = false
+}
+
 variable "loki_mode" {
   type        = string
   description = "Loki mode, must be either `single` or `distributed`"
