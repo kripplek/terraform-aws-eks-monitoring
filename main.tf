@@ -57,15 +57,20 @@ module "resources" {
   metrics_server_enabled = var.metrics_server_enabled
   prometheus_enabled     = var.prometheus_enabled
   loki_enabled           = var.loki_enabled
-  grafana_enabled        = var.grafana_enabled
 
   loki_service_account_name           = var.loki_service_account_name
   loki_compactor_service_account_name = var.loki_compactor_service_account_name
-  grafana_service_account_name        = var.grafana_service_account_name
-
   loki_iam_role_arn           = var.loki_enabled ? (module.iam.role.loki != null ? module.iam.role.loki.arn : "") : ""
   loki_compactor_iam_role_arn = var.loki_enabled ? (module.iam.role.loki_compactor != null ? module.iam.role.loki_compactor.arn : "") : ""
   grafana_iam_role_arn        = var.grafana_enabled ? (module.iam.role.grafana != null ? module.iam.role.grafana.arn : "") : ""
+  grafana_service_account_name        = var.grafana_service_account_name
+
+  grafana_enabled        = var.grafana_enabled
+  grafana_persistence_enabled = var.grafana_persistence_enabled
+  grafana_persistence_storageClassName = var.grafana_persistence_storageClassName
+  grafana_additional_data_sources = var.grafana_additional_data_sources
+  grafana_admin_user = var.grafana_admin_user
+  grafana_admin_password = var.grafana_admin_password
 
   loki_storage_s3_bucket_name = local.s3_bucket_name
 

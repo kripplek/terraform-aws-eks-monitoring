@@ -6,6 +6,22 @@ locals {
   grafana_svc = "grafana.${var.k8s_namespace}.svc.cluster.local"
 }
 
+#resource "kubernetes_persistent_volume" "grafana" {
+#  metadata {
+#    name = "pv-grafana"
+#  }
+#
+#  spec {
+#    access_modes = ["ReadWriteOnce"]
+#
+#    capacity = {
+#      storage = "10Gi"
+#    }
+#
+#    storage_class_name = "gp2"
+#  }
+#}
+
 resource "helm_release" "metrics_server" {
   count      = var.prometheus_enabled || var.metrics_server_enabled ? 1 : 0
   name       = var.helm_release_name_metrics_server
@@ -99,6 +115,13 @@ resource "helm_release" "grafana" {
       loki_svc                     = local.loki_svc
       grafana_service_account_name = var.grafana_service_account_name
       grafana_iam_role_arn         = var.grafana_iam_role_arn
+      grafana_admin_user           = var.grafana_admin_user
+      grafana_admin_password       = var.grafana_admin_password
+      grafana_persistence_enabled  = var.grafana_persistence_enabled
+      grafana_additional_data_sources = var.grafana_additional_data_sources
+      grafana_persistence_storageClassName = var.grafana_persistence_storageClassName
+      grafana_server_url           = var.grafana_server_url
+
     })
   ]
 

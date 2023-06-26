@@ -1,4 +1,6 @@
 ---
+server:
+  root_url: ${grafana_server_url}
 rbac:
   create: true
   ## Use an existing ClusterRole/Role (depending on rbac.namespaced false/true)
@@ -53,28 +55,25 @@ persistence:
 persistence:
   enabled: ${grafana_persistence_enabled}
   type: pvc
-  storageClassName: default
+  storageClassName: ${grafana_persistence_storageClassName}
   accessModes:
     - ReadWriteOnce
   size: 10Gi
-  annotations: {}
-  finalizers:
-    - kubernetes.io/pvc-protection
   # selectorLabels: {}
   # subPath: ""
   # existingClaim:
-  inMemory:
-    enabled: true
-    sizeLimit: 300Mi
+  #  inMemory:
+  #    enabled: true
+  #    sizeLimit: 300Mi
 
-adminUser: admin
-# adminPassword: strongpassword
+adminUser: ${grafana_admin_user}
+adminPassword: ${grafana_admin_password}
 
 # Use an existing secret for the admin user.
-admin:
-  existingSecret: "grafana"
-  userKey: admin-user
-  passwordKey: admin-password
+#admin:
+#  existingSecret: "grafana"
+#  userKey: admin-user
+#  passwordKey: admin-password
 
 plugins:
   - grafana-piechart-panel

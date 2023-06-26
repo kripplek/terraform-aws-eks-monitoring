@@ -43,7 +43,31 @@ variable "grafana_persistence_enabled" {
 variable "grafana_additional_data_sources" {
   type        = string
   description = "Additional data sources to add to grafana"
-  default     = false
+  default     = ""
+}
+
+variable "grafana_server_url" {
+  type        = string
+  description = "Url that grafan will be hosted at"
+  default     = "localhost"
+}
+
+variable "grafana_persistence_storageClassName" {
+  type        = string
+  description = "for the pvc, what storage class?"
+  default     = "gp2"
+}
+
+variable "grafana_admin_user" {
+  type        = string
+  description = "Root login username"
+  default     = "admin"
+}
+
+variable "grafana_admin_password" {
+  type        = string
+  description = "Root login password"
+  default     = "password"
 }
 
 variable "loki_mode" {

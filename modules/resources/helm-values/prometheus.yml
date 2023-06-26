@@ -1,7 +1,7 @@
 ---
 alertmanager:
   persistentVolume:
-    enabled: false
+    enabled: true
   emptyDir:
     sizeLimit: 2Gi
 
